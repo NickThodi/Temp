@@ -1,6 +1,7 @@
 package com.Aditya;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,15 +9,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.Aditya.Employee.EmployeeDBOprApp;
+import com.Aditya.util.EmployeeHelperServlet;
 
 /**
  * Servlet implementation class EmpJDBCServlet
  */
 public class EmployeeSearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private int empId;
-       
+	//private int empId;
+    
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -39,9 +40,17 @@ public class EmployeeSearchServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-	    request.setAttribute("message", empId);
-	    String empId = request.getParameter("empId");
-		System.out.println("This------------");	
+        
+        try {
+			String responseBody = EmployeeHelperServlet.prepareResponse(request);
+			//response.setContentType("text/html");
+			//response.getWriter().append(responseBody);
+			request.setAttribute("employee", responseBody);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    //request.setAttribute("empId", null);
 		doGet(request, response);
 	}
 
